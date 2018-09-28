@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id = "demo" >Press 'Start' to Begin</p>
+
+<!--First four buttons-->
+<button id = 1 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 2 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 3 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 4 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+
+<script>
+//New line between rows
+document.write("<BR>");
+</script>
+
+<!--Second row of buttons-->
+<button id = 5 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 6 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 7 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 8 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+
+<script>
+document.write("<BR>");
+</script>
+
+<!--Third row of buttons-->
+<button id = 9 type="button" onclick= "game(id)" style= "height:100px;width:100px">?</button>
+<button id = 10 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 11 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 12 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+
+<script>
+//New line between rows
+document.write("<BR>");
+</script>
+
+<!--Fourth row of buttons-->
+<button id = 13 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 14 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 15 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+<button id = 16 type="button" onclick= "game(id)" style="height:100px;width:100px">?</button>
+
+<script>
+//New line between rows
+document.write("<BR>");
+document.write("<BR>");
+</script>
+
+<button type="button" onclick= "initialize()" style="height:50px;width:100px">Start</button>
+<button type="button" onclick= "reset()" style="height:50px;width:100px">Reset</button>
+
+<script>
+var output = []; //random colors array
+var count; // number of correct guesses
+var prev; //previous guess
+var clicks;
+function initialize(){
+    var location; //random number holder
+    //colors to be used
+    var colors = ["red", "red", "orange", "orange", "yellow", "yellow","green", "green", "Khaki", "Khaki", "Chartreuse", "Chartreuse", "magenta", "magenta", "aqua", "aqua"];
+    //sets buttons
+    for(i = 1; i < 17; i++){
+        document.getElementById(i).style.background = "white";
+        document.getElementById(i).textContent = "?";
+    }
+    for(i = 0; i < 16; i++){
+        location = Math.floor(Math.random() * (16 - i)); //random number in color array
+        output[i] = colors[location]; //sets corresponding square to color at random number
+        colors.splice(location, 1); //remove color
+    }
+    count = 1; //first guess
+    prev = 17; //no previous
+    prev1 = 17;
+    prev2 = 17;
+    clicks = 0;
+    document.getElementById("demo").innerHTML = "Press 'Reset' to restart";
+}
+
+function reset(){
+	initialize(); //re initialize
+    document.getElementById("demo").innerHTML = "Grid has been reset";
+}
+
+function game(x){
+    if(count < 9 && x != prev && document.getElementById(x).style.background == "white"){
+      clicks++;
+      if(prev == 17){ //no previous guess
+          document.getElementById(x).style.background = output[x - 1]; //display color and count
+          document.getElementById(x).textContent = count;
+          if(prev1 != 17 && prev2 != 17){
+          	document.getElementById(prev1).style.background = "gray";
+            document.getElementById(prev2).style.background = "gray";
+            prev1 = 17;
+            prev2 = 17;
+          }
+          prev = x; //store current guess
+      } else if (output[x - 1] == output[prev - 1] && prev != x){ //correct guess
+          document.getElementById(x).style.background = output[x - 1]; //display
+          document.getElementById(x).textContent = count;
+          count++; //increment count
+          prev1 = x;
+          prev2 = prev;
+          prev = 17; //clear previous guess
+      } else { //incorrect guess
+          document.getElementById(prev).style.background = "white"; //clear previous button
+          document.getElementById(prev).textContent = "?";
+          document.getElementById(x).style.background = output[x - 1]; //display for current button
+          document.getElementById(x).textContent = count;
+          prev = x; //store current guess
+      }
+      document.getElementById("demo").innerHTML = "Press 'Reset' to restart";
+      if(count == 9){ //after winning
+          document.getElementById(prev1).style.background = "gray";
+          document.getElementById(prev2).style.background = "gray";
+          prev1 = 17;
+          prev2 = 17;
+          document.getElementById("demo").innerHTML = "You Win!! Number of Guesses: " + clicks + "  Press 'Reset' to play again";
+      }
+    }
+}
+</script>
+
+</body>
+</html>
